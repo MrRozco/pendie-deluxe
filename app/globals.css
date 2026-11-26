@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-noir: #0a0a09;
+  --color-noir-2: #111110;
+  --color-noir-3: #171614;
+  --color-noir-deep: #070706;
+  --color-ivory: #ede6da;
+  --color-ivory-dim: #cfc7ba;
+  --color-stone: #a39c90;
+  --color-ash: #8a8478;
+  --color-gold: #c9a96e;
+  --color-gold-light: #e3cfa3;
+  --color-ember: #e0a27a;
+
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-bodoni), Didot, "Times New Roman", serif;
+
+  --ease-lux: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-sweep: cubic-bezier(0.7, 0, 0.2, 1);
+
+  --animate-marquee: marquee 60s linear infinite;
+  --animate-cue: cue 2.6s var(--ease-sweep) infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes cue {
+    0% { transform: scaleY(0); transform-origin: top; }
+    45% { transform: scaleY(1); transform-origin: top; }
+    55% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-noir font-sans font-light text-ivory antialiased; }
+  ::selection { background: var(--color-gold); color: var(--color-noir); }
+  :focus-visible { outline: 1px solid var(--color-gold-light); outline-offset: 4px; }
+}
+
+@layer components {
+  .container-lux { @apply mx-auto w-full max-w-[1320px] px-[22px] sm:px-10 lg:px-14; }
+  .section { @apply py-22 md:py-28 lg:py-40; }
+  .hairline { @apply border-ivory/12; }
+
+  /* Small spaced caps label */
+  .label {
+    @apply inline-flex items-center gap-3.5 text-[11px] font-medium tracking-[0.34em] uppercase text-gold;
+  }
+  .label-rule::before { content: ""; @apply h-px w-10 bg-current; }
+
+  .display-1 {
+    @apply font-serif font-normal leading-[0.94] tracking-[-0.025em] text-ivory;
+    font-size: clamp(3.4rem, 8.4vw, 8.25rem);
+  }
+  .display-2 {
+    @apply font-serif font-normal leading-none tracking-[-0.02em] text-ivory;
+    font-size: clamp(2.5rem, 5.2vw, 5rem);
+  }
+  .display-3 {
+    @apply font-serif font-normal leading-[1.1] tracking-[-0.01em] text-ivory;
+    font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  }
+  .prose-lux { @apply text-base leading-[1.85] font-light text-stone sm:text-[17px]; }
+  .gold-italic { @apply italic text-gold; }
+
+  /* Sharp buttons with a fill sweep on hover */
+  .btn {
+    @apply relative isolate inline-flex min-h-[58px] items-center justify-center gap-4 overflow-hidden border px-9
+      text-xs font-medium tracking-[0.26em] whitespace-nowrap uppercase no-underline
+      transition-[color,border-color] duration-500 ease-sweep;
+  }
+  .btn::before {
+    content: "";
+    @apply absolute inset-0 -z-10 origin-right scale-x-0 transition-transform duration-600 ease-sweep;
+  }
+  .btn:hover::before { @apply origin-left scale-x-100; }
+  .btn-gold { @apply border-gold bg-gold text-noir; }
+  .btn-gold::before { @apply bg-ivory; }
+  .btn-gold:hover { @apply border-ivory; }
+  .btn-line { @apply border-gold/55 bg-transparent text-ivory; }
+  .btn-line::before { @apply bg-gold; }
+  .btn-line:hover { @apply border-gold text-noir; }
+
+  /* Underlined text link with a long arrow */
+  .text-link {
+    @apply relative inline-flex min-h-11 items-center gap-4 text-xs font-medium tracking-[0.26em] text-ivory uppercase;
+  }
+  .text-link::after {
+    content: "";
+    @apply absolute bottom-2 left-0 right-[50px] h-px origin-left scale-x-25 bg-gold transition-transform duration-600 ease-lux;
+  }
+  .text-link:hover::after { @apply scale-x-100; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+}
